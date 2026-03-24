@@ -193,7 +193,26 @@
         let timerInterval = null;
         let isSubmitted = false;
 
+        // window.onload = function() {
+        //     const el = document.getElementById('admin-image-preview');
+        //     Sortable.create(el, {
+        //         animation: 200,
+        //         onEnd: function() {
+        //             const newPages = [];
+        //             el.querySelectorAll('.admin-page-item').forEach(item => newPages.push(item.dataset.url));
+        //             examData.pages = newPages;
+        //             renderAdminImages();
+        //         }
+        //     });
+        // };
+
         window.onload = function() {
+            // Tự động điền tên từ localStorage nếu có
+            const savedName = localStorage.getItem('mes_user_name');
+            if (savedName) {
+                document.getElementById('userName').value = savedName;
+            }
+
             const el = document.getElementById('admin-image-preview');
             Sortable.create(el, {
                 animation: 200,
@@ -286,6 +305,10 @@
             const name = document.getElementById('userName').value.trim();
             const code = document.getElementById('examCodeInput').value.trim().toUpperCase();
             if(!name || !code) return alert("Điền đủ thông tin!");
+
+            // Lưu tên vào localStorage để lần sau không phải nhập lại
+            localStorage.setItem('mes_user_name', name);
+            
             setLoading(true);
             try {
                 const res = await fetch(`${GOOGLE_SCRIPT_URL}?code=${code}&t=${Date.now()}`);
