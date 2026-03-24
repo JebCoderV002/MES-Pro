@@ -12,6 +12,8 @@
         .animate-fade-in { animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .sticky-header { position: sticky; top: 0; z-index: 50; }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen">
@@ -62,16 +64,25 @@
                 </div>
             </section>
 
-            <!-- VIEW: ADMIN -->
+            <!-- VIEW: ADMIN (Chỉnh sửa Layout phần Header Admin) -->
             <section id="view-admin" class="hidden animate-fade-in space-y-6">
                 <div class="bg-white p-6 rounded-3xl border shadow-sm space-y-4">
-                    <h2 class="text-xl font-bold flex items-center gap-2 text-slate-800"><i class="fas fa-cog"></i> Thông tin đề thi</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input id="admin-title" class="w-full p-3 bg-slate-50 border rounded-2xl" placeholder="Tiêu đề đề thi">
-                        <input id="admin-code" class="w-full p-3 bg-slate-50 border rounded-2xl uppercase font-bold text-blue-600" placeholder="Mã đề (Ví dụ: TOAN10)">
-                        <div class="flex items-center gap-2 bg-slate-50 p-3 border rounded-2xl">
-                            <i class="fas fa-clock text-slate-400"></i>
-                            <input id="admin-duration" type="number" class="bg-transparent w-full outline-none font-bold" placeholder="Thời gian (phút)" value="90">
+                    <h2 class="text-xl font-bold flex items-center gap-2 text-slate-800"><i class="fas fa-cog"></i> Cấu hình đề thi</h2>
+                    <div class="space-y-4">
+                        <!-- Hàng 1: Tiêu đề -->
+                        <input id="admin-title" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-400" placeholder="Tên kỳ thi (Ví dụ: Kiểm tra 15 phút - Chương 1)">
+                        
+                        <!-- Hàng 2: Mã đề và Thời gian chia đều 2 bên -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="relative">
+                                <i class="fas fa-fingerprint absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
+                                <input id="admin-code" class="w-full pl-10 pr-4 py-4 bg-slate-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 uppercase font-bold text-blue-600" placeholder="Mã đề">
+                            </div>
+                            <div class="relative">
+                                <i class="fas fa-clock absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
+                                <input id="admin-duration" type="number" class="w-full pl-10 pr-12 py-4 bg-slate-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 font-bold" placeholder="Phút" value="45">
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400">PHÚT</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -135,7 +146,6 @@
             });
             document.getElementById(`view-${viewName}`).classList.remove('hidden');
             
-            // Hiện/Ẩn headers đặc thù
             document.getElementById('main-header').classList.toggle('hidden', viewName === 'exam');
             document.getElementById('exam-status-bar').classList.toggle('hidden', viewName !== 'exam');
 
@@ -389,7 +399,6 @@
                 }
                 total += earned;
 
-                // Render detail item
                 const item = document.createElement('div');
                 item.className = `p-4 rounded-2xl border ${isCorrect ? 'bg-green-50 border-green-100' : (earned > 0 ? 'bg-yellow-50 border-yellow-100' : 'bg-red-50 border-red-100')}`;
                 item.innerHTML = `
